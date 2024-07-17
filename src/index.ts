@@ -1,5 +1,5 @@
-import {server} from './server/Server';
+import { app } from "./api/app";
 
-const port = process.env.PORT;
+const port = process.env.PORT || 3001;
 
-server.listen(port, () => console.log(`App rodando na porta ${port}`));
+app.listen(port, () => console.log(`App rodando na porta ${port}`));

@@ -4,9 +4,9 @@ import { ProductController } from './../controllers'
 
 const router = Router();
 
-router.get('/', (req, res) => {
+router.get('/products', (req, res) => {
 
-  return res.status(StatusCodes.ACCEPTED).json('Hello world!');
+  return res.status(StatusCodes.ACCEPTED).json('All products');
 });
 
 router.post('/products', ProductController.create);
