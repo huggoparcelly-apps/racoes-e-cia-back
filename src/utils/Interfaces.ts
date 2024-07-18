@@ -11,6 +11,5 @@ export interface ProductDTO {
   name: string;
   description: string | null;
   price: number | null;
-  quantity: number;
   image: string;
 }
