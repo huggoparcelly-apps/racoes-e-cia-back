@@ -14,5 +14,18 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
 
+  app:
+    build: .
+    container_name: racoes-e-cia-backend
+    restart: always
+    ports:
+      - '3001:3001'
+    depends_on:
+      - db
+    environment:
+      PORT: ${PORT}
+      NODE_ENV: ${NODE_ENV}
+      DATABASE_URL: ${DATABASE_URL}
+
 volumes:
   postgres-data:
