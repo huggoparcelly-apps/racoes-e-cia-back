@@ -1,28 +1,12 @@
-import { getAll } from './../../services/products/Find';
 import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import { ProductService } from "../../services";
-import { IProduct } from "../../utils/Interfaces";
-
-// export const createProduct = async (req: Request<{}, {}, IProduct>, res: Response) => {
-//   const data = req.body;
-
-//   try {
-    
-//     const newProduct = await ProductService.create(data);
-//     return res.status(StatusCodes.CREATED).json(newProduct);
-//   } catch (error) {
-    
-//     console.error(error);
-//     return res.status(500).json({ error: "Internal Server Error" });
-//   }
-// };
+import { ProductService } from "../../services/products";
 
 export const createProduct = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const data = req.body;
     const newProduct = await ProductService.create(data);
-    return res.status(201).json(newProduct);
+    return res.status(StatusCodes.CREATED).json(newProduct);
   } catch (error) {
     next(error);
   }

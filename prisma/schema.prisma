@@ -18,7 +18,7 @@ model User {
   name         String
   email        String
   role         String
-  firebaseId   String
+  firebaseId   String     @unique
   orders       Order[]    // Relacionamento de um para muitos
   addresses    Address[]  // Relacionamento de um para muitos
 }

@@ -15,3 +15,18 @@ export interface ProductDTO {
   price: number | null;
   image: string;
 }
+
+export interface IUser {
+  name: string;
+  email: string;
+  firebaseId: string;
+  role: string;
+}
+
+export interface UserDTO {
+  id: number;
+  name: string;
+  email: string;
+  firebaseId: string;
+  role: string;
+}

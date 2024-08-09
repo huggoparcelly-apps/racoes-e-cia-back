@@ -33,7 +33,7 @@ services:
     working_dir: /app
     volumes:
       - .:/app
-    command: npx prisma migrate dev --name init
+    command: npx prisma migrate dev 
     depends_on:
       - db
   
