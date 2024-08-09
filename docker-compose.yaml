@@ -22,10 +22,20 @@ services:
       - '3001:3001'
     depends_on:
       - db
+      - migrate
     environment:
       PORT: ${PORT}
       NODE_ENV: ${NODE_ENV}
       DATABASE_URL: ${DATABASE_URL}
-
+  
+  migrate:
+    image: node:18
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: npx prisma migrate dev --name init
+    depends_on:
+      - db
+  
 volumes:
   postgres-data:

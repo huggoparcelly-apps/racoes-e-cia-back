@@ -9,6 +9,7 @@ export const toProductDTO = (product: Product | null): ProductDTO | null => {
     id: product.id,
     name: product.name,
     description: product.description,
+    category: product.category,
     price: product.price,
     image: product.image,
   };

@@ -14,12 +14,13 @@ datasource db {
 }
 
 model User {
-  id        Int        @id @default(autoincrement())
-  name      String
-  fone      String
-  clerkId   String
-  orders    Order[]    // Relacionamento de um para muitos
-  addresses Address[]  // Relacionamento de um para muitos
+  id           Int        @id @default(autoincrement())
+  name         String
+  email        String
+  role         String
+  firebaseId   String
+  orders       Order[]    // Relacionamento de um para muitos
+  addresses    Address[]  // Relacionamento de um para muitos
 }
 
 model Address {
@@ -52,23 +53,13 @@ model OrderProduct {
   @@id([productId, orderId])
 }
 
-model Supplier {
-  id        Int       @id @default(autoincrement())
-  name      String
-  cnpj      String
-  fone      String
-  email     String
-  products  Product[] // Relacionamento de um para muitos
-}
-
 model Product {
   id          Int         @id @default(autoincrement())
   name        String
   price       Float?
-  quantity    Int         @default(1)
+  quantity    Int         @default(0)
   image       String
   description String?
-  supplierId  Int?
-  supplier    Supplier?   @relation(fields: [supplierId], references: [id])
+  category    String?
   orders      OrderProduct[] // Relacionamento de muitos para muitos através de uma tabela intermediária
 }
