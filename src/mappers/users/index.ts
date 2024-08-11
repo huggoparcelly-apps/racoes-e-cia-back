@@ -2,10 +2,7 @@
 import { User } from "@prisma/client";
 import { UserDTO } from "../../utils/Interfaces";
 
-export const toUserDTO = (user: User | null): UserDTO | null => {
-  if (!user) {
-    return null;
-  }
+export const toUserDTO = (user: User): UserDTO => {
   return {
     id: user.id,
     name: user.name,

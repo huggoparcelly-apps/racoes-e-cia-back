@@ -28,6 +28,7 @@ model Address {
   street       String
   number       Int
   neighborhood String
+  complement   String?
   userId       Int
   user         User     @relation(fields: [userId], references: [id])
   orders       Order[]
@@ -35,13 +36,15 @@ model Address {
 
 model Order {
   id          Int               @id @default(autoincrement())
-  orderDate   DateTime
+  date   DateTime
   userId      Int
   user        User              @relation(fields: [userId], references: [id])
   addressId   Int
   address     Address           @relation(fields: [addressId], references: [id])
   totalAmount Float
-  products    OrderProduct[]    // Relacionamento de muitos para muitos através de uma tabela intermediária
+  paymentType String
+  status      String
+  itens    OrderProduct[]    // Relacionamento de muitos para muitos através de uma tabela intermediária
 }
 
 model OrderProduct {

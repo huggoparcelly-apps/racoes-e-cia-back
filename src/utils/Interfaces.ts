@@ -30,3 +30,39 @@ export interface UserDTO {
   firebaseId: string;
   role: string;
 }
+
+export interface IOrder {
+  date: string; 
+  address: IAddress; 
+  itens: InterItem[];
+  totalAmount: number;
+  status: string;
+  paymentType: string;
+}
+
+export interface OrderDTO {
+  id: number;
+  date: string; 
+  itens: ItemDTO[];
+  totalAmount: number;
+  status: string;
+  paymentType: string;
+}
+
+export interface IAddress {
+  street: string;
+  number: number;
+  neighborhood: string;
+  complement: string | null;
+  userId: number;
+}
+
+export interface InterItem {
+  productId: number;
+  quantity: number;
+}
+
+export interface ItemDTO {
+  product: string;
+  quantity: number;
+}
