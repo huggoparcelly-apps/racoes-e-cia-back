@@ -5,6 +5,7 @@ import cors from 'cors';
 import { productsRouter } from "../routers/Products";
 import { userRouter } from "../routers/Users";
 import { orderRouter } from "../routers/Orders";
+import validateJWT from "../middlewares/validateJWT";
 
 const server = express();
 
@@ -19,6 +20,7 @@ server.use(cors(corsOptions));
 server.use(express.json());
 server.use('/products', productsRouter);
 server.use('/user', userRouter);
-server.use('/order', orderRouter);
+
+server.use('/orders', validateJWT,  orderRouter);
 
 export { server };

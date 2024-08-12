@@ -32,7 +32,7 @@ export interface UserDTO {
 }
 
 export interface IOrder {
-  date: string; 
+  date: Date; 
   address: IAddress; 
   itens: InterItem[];
   totalAmount: number;
@@ -42,7 +42,7 @@ export interface IOrder {
 
 export interface OrderDTO {
   id: number;
-  date: string; 
+  date: Date; 
   itens: ItemDTO[];
   totalAmount: number;
   status: string;

@@ -11,7 +11,7 @@ export const create = async (data: IOrder, savedOrder: Order): Promise<OrderProd
 
     const orderProducts = toOrderProductEntities(data, savedOrder)
     
-    return await prisma.orderProduct.createManyAndReturn({ data: { ...orderProducts } });
+    return await prisma.orderProduct.createManyAndReturn({ data: orderProducts });
   } catch (error: any) {
     if (error.code === 'P2002') {
       throw new BadRequestError('Unique constraint failed');

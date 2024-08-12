@@ -1,10 +1,9 @@
 import { Address, Order, OrderProduct } from "@prisma/client";
 import { IOrder, ItemDTO, OrderDTO } from "../../utils/Interfaces";
 
-export const toOrderEntity = (order: IOrder, address: Address): Order => {
+export const toOrderEntity = (order: IOrder, address: Address): Omit<Order, 'id'> => {
   
   return {
-    id: 0,
     date: new Date(order.date),
     userId: address.userId,
     addressId: address.id,
@@ -18,7 +17,7 @@ export const toOrderDTO = (order: Order, itens: OrderProduct[]): OrderDTO => {
   
   return {
     id: order.id,
-    date: order.date.toDateString(),
+    date: order.date,
     itens: toItemsDTO(itens),
     totalAmount: order.totalAmount,
     status: order.status,

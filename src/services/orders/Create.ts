@@ -7,12 +7,11 @@ import { AddressService } from './../address/index';
 import { toOrderDTO, toOrderEntity } from '../../mappers/order';
 import { OrderProductService } from '../orderProduct';
 
-export const create = async (data: IOrder): Promise<OrderDTO | null> => {
+export const create = async (data: IOrder, user_id: string): Promise<OrderDTO | null> => {
   
   try {
-    // capturar o token
-    const firebaseID = "123token" ;
     // buscar user
+    const firebaseID = user_id;
     const user = await UserService.getByFirebaseId(firebaseID);
     const userId = user.id;
     

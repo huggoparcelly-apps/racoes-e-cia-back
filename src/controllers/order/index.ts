@@ -5,10 +5,9 @@ import { OrderService } from "../../services/orders";
 export const createOrder = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const data = req.body;
-    const token = req.headers.authorization?.split("Bearer ")[1];
+    const {user_id} = req.body.user;
     
-    // const newOrder = await OrderService.create(data);
-    const newOrder = {token: token};
+    const newOrder = await OrderService.create(data, user_id);
 
     return res.status(StatusCodes.CREATED).json(newOrder);
   } catch (error) {
