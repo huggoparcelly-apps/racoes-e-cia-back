@@ -5,12 +5,25 @@ import { OrderService } from "../../services/orders";
 export const createOrder = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const data = req.body;
-    const user_id = req.params.userFirebaseId;
+    const { user_id } = req.body.user;
     
     const newOrder = await OrderService.create(data, user_id);
 
     return res.status(StatusCodes.CREATED).json(newOrder);
   } catch (error) {
     next(error);
+  }
+};
+
+export const findAllOrders = async (req: Request, res: Response) => {
+
+  try {
+    const { user_id } = req.body.user;
+    const allOrders = await OrderService.getAll(user_id);
+    
+    return res.status(StatusCodes.OK).json(allOrders);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 };

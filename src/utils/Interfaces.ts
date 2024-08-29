@@ -43,7 +43,7 @@ export interface IOrder {
 export interface OrderDTO {
   id: number;
   date: Date; 
-  itens: ItemDTO[];
+  itens?: ItemDTO[] | null;
   totalAmount: number;
   status: string;
   paymentType: string;

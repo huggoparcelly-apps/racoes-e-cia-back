@@ -13,7 +13,7 @@ export const toOrderEntity = (order: IOrder, address: Address): Omit<Order, 'id'
   };
 };
 
-export const toOrderDTO = (order: Order, itens: OrderProduct[]): OrderDTO => {
+export const toOrderDTO = (order: Order, itens?: OrderProduct[]): OrderDTO => {
   
   return {
     id: order.id,
@@ -25,8 +25,16 @@ export const toOrderDTO = (order: Order, itens: OrderProduct[]): OrderDTO => {
   }
 }
 
-const toItemsDTO = (itens: OrderProduct[]): ItemDTO[] => {
-  return itens.map((item) => toItemDTO(item));
+export const toOrdersDTOList = (orders: Order[], itensHashmap: Map<number, OrderProduct[]>): OrderDTO[] => {
+  return orders.map(order => toOrderDTO(order, itensHashmap.get(order.id)))
+  .filter((dto) => dto !== null) as OrderDTO[];
+}
+
+const toItemsDTO = (itens?: OrderProduct[]): ItemDTO[] | null=> {
+  if(itens) {
+    return itens.map((item) => toItemDTO(item));
+  }
+  return null;
 }
 
 const toItemDTO = (orderPorduct: OrderProduct): ItemDTO => {

@@ -23,7 +23,6 @@ server.use('/products', productsRouter);
 server.use('/user', userRouter);
 server.use('/verifyToken', verifyTokenRouter)
 
-server.use('/orders', orderRouter);
-// server.use('/orders', validateJWT,  orderRouter);
+server.use('/orders', validateJWT,  orderRouter);
 
 export { server };

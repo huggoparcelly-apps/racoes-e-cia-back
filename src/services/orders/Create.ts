@@ -7,12 +7,11 @@ import { AddressService } from './../address/index';
 import { toOrderDTO, toOrderEntity } from '../../mappers/order';
 import { OrderProductService } from '../orderProduct';
 
-export const create = async (data: IOrder, user_id: string): Promise<OrderDTO | null> => {
+export const create = async (data: IOrder, userFirebaseId: string): Promise<OrderDTO | null> => {
   
   try {
     // buscar user
-    const firebaseID = user_id;
-    const user = await UserService.getByFirebaseId(firebaseID);
+    const user = await UserService.getByFirebaseId(userFirebaseId);
     const userId = user.id;
     
     // salvar endereço
