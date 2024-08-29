@@ -5,7 +5,7 @@ import { OrderService } from "../../services/orders";
 export const createOrder = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const data = req.body;
-    const {user_id} = req.body.user;
+    const user_id = req.params.userFirebaseId;
     
     const newOrder = await OrderService.create(data, user_id);
 

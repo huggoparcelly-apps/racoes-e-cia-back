@@ -17,13 +17,13 @@ export const getUserByFirebaseId = async(req: Request, res: Response) => {
   try {
     const { firebaseId } = req.params;
 
-    const product = await UserService.getByFirebaseId(firebaseId);
+    const user = await UserService.getByFirebaseId(firebaseId);
 
-    if (!product) {
-      return res.status(StatusCodes.NOT_FOUND).json({ error: "Product not found" });
+    if (!user) {
+      return res.status(StatusCodes.NOT_FOUND).json({ error: "User not found" });
     }
     
-    return res.status(StatusCodes.OK).json(product);
+    return res.status(StatusCodes.OK).json(user);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Internal Server Error" });
