@@ -63,6 +63,6 @@ export interface InterItem {
 }
 
 export interface ItemDTO {
-  product: string;
+  productName: string;
   quantity: number;
 }

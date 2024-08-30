@@ -13,33 +13,31 @@ export const toOrderEntity = (order: IOrder, address: Address): Omit<Order, 'id'
   };
 };
 
-export const toOrderDTO = (order: Order, itens?: OrderProduct[]): OrderDTO => {
+export const toOrdersDTOList = (orders: Order[], itensHashmap: Map<number, ItemDTO[]>): OrderDTO[] => {  
+  return orders.map(order => toOrderDTO(order, itensHashmap.get(order.id)))
+  .filter((dto) => dto !== null) as OrderDTO[];
+}
+
+export const toOrderDTO = (order: Order, itens?: ItemDTO[]): OrderDTO => {
   
   return {
     id: order.id,
     date: order.date,
-    itens: toItemsDTO(itens),
+    itens: itens,
     totalAmount: order.totalAmount,
     status: order.status,
     paymentType: order.paymentType
   }
 }
 
-export const toOrdersDTOList = (orders: Order[], itensHashmap: Map<number, OrderProduct[]>): OrderDTO[] => {
-  return orders.map(order => toOrderDTO(order, itensHashmap.get(order.id)))
-  .filter((dto) => dto !== null) as OrderDTO[];
+export const toItemsDTO = (itens: OrderProduct[]): ItemDTO[] => {
+  
+  return itens.map((item) => toItemDTO(item));
 }
 
-const toItemsDTO = (itens?: OrderProduct[]): ItemDTO[] | null=> {
-  if(itens) {
-    return itens.map((item) => toItemDTO(item));
-  }
-  return null;
-}
-
-const toItemDTO = (orderPorduct: OrderProduct): ItemDTO => {
+export const toItemDTO = (orderPorduct: OrderProduct): ItemDTO => {
   return {
-    product: orderPorduct.productId.toString(),
+    productName: orderPorduct.productId.toString(),
     quantity: orderPorduct.quantity
   }
 }

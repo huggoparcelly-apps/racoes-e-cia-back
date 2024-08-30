@@ -4,7 +4,7 @@ import { BadRequestError } from "../../errors/BadRequestError";
 import { InternalServerError } from "../../errors/InternalServerError";
 import { IOrder, OrderDTO } from "../../utils/Interfaces";
 import { AddressService } from './../address/index';
-import { toOrderDTO, toOrderEntity } from '../../mappers/order';
+import { toItemsDTO, toOrderDTO, toOrderEntity } from '../../mappers/order';
 import { OrderProductService } from '../orderProduct';
 
 export const create = async (data: IOrder, userFirebaseId: string): Promise<OrderDTO | null> => {
@@ -24,8 +24,8 @@ export const create = async (data: IOrder, userFirebaseId: string): Promise<Orde
     
     //salvar orderProduct
     const orderProduct = await OrderProductService.create(data, savedOrder)
-    
-    return toOrderDTO(savedOrder, orderProduct);
+    const orderDTO = toItemsDTO(orderProduct)
+    return toOrderDTO(savedOrder, orderDTO);
     
   } catch (error: any) {
     if (error.code === 'P2002') {
