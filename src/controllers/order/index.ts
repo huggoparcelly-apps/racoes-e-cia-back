@@ -27,3 +27,25 @@ export const findAllOrders = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+
+export const findOrderById = async(req: Request, res: Response) => {
+  
+  try {
+    const { user_id } = req.body.user;
+    const { id } = req.params;
+
+    const orderId = Number(id);
+
+    const product = await OrderService.getById(user_id, orderId);
+
+    if (!product) {
+      return res.status(StatusCodes.NOT_FOUND).json({ error: "Order not found" });
+    }
+    
+    return res.status(StatusCodes.OK).json(product);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+}

@@ -18,16 +18,18 @@ export const toOrdersDTOList = (orders: Order[], itensHashmap: Map<number, ItemD
   .filter((dto) => dto !== null) as OrderDTO[];
 }
 
-export const toOrderDTO = (order: Order, itens?: ItemDTO[]): OrderDTO => {
-  
-  return {
-    id: order.id,
-    date: order.date,
-    itens: itens,
-    totalAmount: order.totalAmount,
-    status: order.status,
-    paymentType: order.paymentType
+export const toOrderDTO = (order: Order | null, itens?: ItemDTO[]): OrderDTO | null => {
+  if (order) {
+    return {
+      id: order.id,
+      date: order.date,
+      itens: itens,
+      totalAmount: order.totalAmount,
+      status: order.status,
+      paymentType: order.paymentType
+    }
   }
+  return null;
 }
 
 export const toItemsDTO = (itens: OrderProduct[]): ItemDTO[] => {
