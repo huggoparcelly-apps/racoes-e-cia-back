@@ -47,6 +47,7 @@ export interface OrderDTO {
   totalAmount: number;
   status: string;
   paymentType: string;
+  address: IAddress;
 }
 
 export interface IAddress {

@@ -13,7 +13,11 @@ export const getAll = async (userFirebaseId: string): Promise<OrderDTO[] | null>
   try {
     const allOrders = await prisma.order.findMany({
       where: { userId: userId },
+      include: {
+        address: true
+      }
     });
+  
 
     const itensHashmap = new Map<number, ItemDTO[]>();
 
@@ -60,6 +64,9 @@ export const getById = async (userFirebaseId: string, id: number): Promise<Order
 
     const order = await prisma.order.findUnique({
       where: { id: id, userId: userId },
+      include: {
+        address: true
+      }
     });
 
     const itens = await prisma.orderProduct.findMany({

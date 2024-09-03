@@ -25,6 +25,7 @@ export const create = async (data: IOrder, userFirebaseId: string): Promise<Orde
     //salvar orderProduct
     const orderProduct = await OrderProductService.create(data, savedOrder)
     const orderDTO = toItemsDTO(orderProduct)
+    
     return toOrderDTO(savedOrder, orderDTO);
     
   } catch (error: any) {

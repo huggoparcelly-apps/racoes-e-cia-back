@@ -22,7 +22,6 @@ server.use(express.json());
 server.use('/products', productsRouter);
 server.use('/user', userRouter);
 server.use('/verifyToken', verifyTokenRouter)
-
 server.use('/orders', validateJWT,  orderRouter);
 
 export { server };
