@@ -22,9 +22,9 @@ export const findAllOrders = async (req: Request, res: Response) => {
     const allOrders = await OrderService.getAll(user_id);
     
     return res.status(StatusCodes.OK).json(allOrders);
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    return res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ error: error.message });
   }
 };
 

@@ -30,18 +30,18 @@ paymentType: string,
 status: string,
 })
 
-export const toOrdersDTOList = (orders: propsAllOrders[], itensHashmap: Map<number, ItemDTO[]>): OrderDTO[] => {  
-  return orders.map(order => toOrderDTO(order, itensHashmap.get(order.id)))
+export const toOrdersDTOList = (orders: propsAllOrders[], itemsHashmap: Map<number, ItemDTO[]>): OrderDTO[] => {  
+  return orders.map(order => toOrderDTO(order, itemsHashmap.get(order.id)))
   .filter((dto) => dto !== null) as OrderDTO[];
 }
 
-export const toOrderDTO = (order: propsAllOrders | null, itens?: ItemDTO[]): OrderDTO | null => {
+export const toOrderDTO = (order: propsAllOrders | null, items?: ItemDTO[]): OrderDTO | null => {
   
   if (order && order.address) {
     return {
       id: order.id,
       date: order.date,
-      itens: itens,
+      items: items,
       totalAmount: order.totalAmount,
       status: order.status,
       paymentType: order.paymentType,
@@ -57,9 +57,9 @@ export const toOrderDTO = (order: propsAllOrders | null, itens?: ItemDTO[]): Ord
   return null;
 }
 
-export const toItemsDTO = (itens: OrderProduct[]): ItemDTO[] => {
+export const toItemsDTO = (items: OrderProduct[]): ItemDTO[] => {
   
-  return itens.map((item) => toItemDTO(item));
+  return items.map((item) => toItemDTO(item));
 }
 
 export const toItemDTO = (orderPorduct: OrderProduct): ItemDTO => {

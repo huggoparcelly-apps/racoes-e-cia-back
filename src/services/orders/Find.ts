@@ -29,11 +29,11 @@ export const getAll = async (userFirebaseId: string): Promise<OrderDTO[] | null>
       });
     }
 
-    const itensHashmap = new Map<number, ItemDTO[]>();
+    const itemsHashmap = new Map<number, ItemDTO[]>();
     
     await Promise.all(
       allOrders.map(async (order) => {
-        const itens = await prisma.orderProduct.findMany({
+        const items = await prisma.orderProduct.findMany({
           where: { orderId: order.id },
           include: {
             product: {
@@ -44,19 +44,19 @@ export const getAll = async (userFirebaseId: string): Promise<OrderDTO[] | null>
           },
         });
 
-        if (itens.length !== 0) {
-          const formattedItens = itens.map((item) => ({
+        if (items.length !== 0) {
+          const formattedItems = items.map((item) => ({
             productName: item.product.name,
             quantity: item.quantity,
           }));
 
-          itensHashmap.set(order.id, formattedItens);
+          itemsHashmap.set(order.id, formattedItems);
         }
       })
       
     );
     
-    const orders = toOrdersDTOList(allOrders, itensHashmap)
+    const orders = toOrdersDTOList(allOrders, itemsHashmap)
     
     return getSortedOrders(orders);
     
@@ -80,7 +80,7 @@ export const getById = async (userFirebaseId: string, id: number): Promise<Order
       }
     });
 
-    const itens = await prisma.orderProduct.findMany({
+    const items = await prisma.orderProduct.findMany({
       where: { orderId: id },
       include: {
         product: {
@@ -92,9 +92,9 @@ export const getById = async (userFirebaseId: string, id: number): Promise<Order
       },
     });
 
-    let formattedItens = getFormattedItens(itens);
+    let formattedItems = getFormattedItems(items);
 
-    return toOrderDTO(order, formattedItens);
+    return toOrderDTO(order, formattedItems);
   } catch (error: any) {
     if (error.code === "P2002") {
       throw new BadRequestError("Unique constraint failed");
@@ -116,18 +116,18 @@ function getSortedOrders(orders: OrderDTO[]): OrderDTO[] {
   });
 }
 
-function getFormattedItens(itens: ({ product: { name: string; price: number | null }; } & { productId: number; orderId: number; quantity: number; })[]) {
-  let formattedItens = undefined;
+function getFormattedItems(items: ({ product: { name: string; price: number | null }; } & { productId: number; orderId: number; quantity: number; })[]) {
+  let formattedItems = undefined;
 
-  if (itens.length !== 0) {
-    formattedItens = itens.map((item) => ({
+  if (items.length !== 0) {
+    formattedItems = items.map((item) => ({
       productName: item.product.name,
       price: item.product.price,
       quantity: item.quantity,
       
     }));
   }
-  return formattedItens;
+  return formattedItems;
 }
 
 async function getUser(userFirebaseId: string) {
