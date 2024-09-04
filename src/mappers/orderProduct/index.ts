@@ -11,5 +11,5 @@ export const toOrderProductEntity = (item: InterItem, savedOrder: Order): OrderP
 };
 
 export const toOrderProductEntities = (data: IOrder, savedOrder: Order): OrderProduct[] => {
-  return data.itens.map((item) => toOrderProductEntity(item, savedOrder));
+  return data.items.map((item) => toOrderProductEntity(item, savedOrder));
 }

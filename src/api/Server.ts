@@ -10,6 +10,7 @@ import { verifyTokenRouter } from "../routers/VerifyToken";
 import { createServer } from "http";
 import { Server as SocketIOServer } from 'socket.io';
 import { socketIo } from "../socket/status";
+import { stripeRouter } from "../routers/Stripe";
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use('/products', productsRouter);
 app.use('/user', userRouter);
 app.use('/verifyToken', verifyTokenRouter)
 app.use('/orders', validateJWT,  orderRouter);
+app.use('/api/checkout_sessions', validateJWT, stripeRouter)
 
 const server = createServer(app);
 const io = new SocketIOServer(server, {
