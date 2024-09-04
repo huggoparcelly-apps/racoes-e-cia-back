@@ -7,8 +7,11 @@ import { userRouter } from "../routers/Users";
 import { orderRouter } from "../routers/Orders";
 import validateJWT from "../middlewares/validateJWT";
 import { verifyTokenRouter } from "../routers/VerifyToken";
+import { createServer } from "http";
+import { Server as SocketIOServer } from 'socket.io';
+import { socketIo } from "../socket/status";
 
-const server = express();
+const app = express();
 
 const corsOptions = {
   origin: process.env.ORIGIN_CORS, // Permitir apenas esta origem (frontend)
@@ -16,12 +19,23 @@ const corsOptions = {
   allowedHeaders: ['Content-Type', 'Authorization'], 
 }
 
-server.use(cors(corsOptions));
+app.use(cors(corsOptions));
+app.use(express.json());
 
-server.use(express.json());
-server.use('/products', productsRouter);
-server.use('/user', userRouter);
-server.use('/verifyToken', verifyTokenRouter)
-server.use('/orders', validateJWT,  orderRouter);
+
+app.use('/products', productsRouter);
+app.use('/user', userRouter);
+app.use('/verifyToken', verifyTokenRouter)
+app.use('/orders', validateJWT,  orderRouter);
+
+const server = createServer(app);
+const io = new SocketIOServer(server, {
+  cors: {
+    origin: process.env.ORIGIN_CORS,
+    methods: ['GET', 'POST'],
+  },
+});
+
+socketIo(io);
 
 export { server };

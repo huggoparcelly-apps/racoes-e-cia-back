@@ -1,26 +1,36 @@
-import { OrderProduct } from "@prisma/client";
 import { prisma } from "../../database";
-import { ItemDTO, OrderDTO } from "../../utils/Interfaces";
-import { UserService } from "../users";
-import { toItemsDTO, toOrderDTO, toOrdersDTOList } from "../../mappers/order";
 import { BadRequestError } from "../../errors/BadRequestError";
 import { InternalServerError } from "../../errors/InternalServerError";
+import { toOrderDTO, toOrdersDTOList } from "../../mappers/order";
+import { ItemDTO, OrderDTO } from "../../utils/Interfaces";
+import { UserService } from "../users";
 
 export const getAll = async (userFirebaseId: string): Promise<OrderDTO[] | null> => {
   // buscar user
-  const userId = await getUserId(userFirebaseId);
+  const user = await getUser(userFirebaseId);
+  const userId = user.id;
 
   try {
-    const allOrders = await prisma.order.findMany({
-      where: { userId: userId },
-      include: {
-        address: true
-      }
-    });
-  
+
+    let allOrders = null;
+
+    if(user.role === 'admin') {
+      allOrders = await prisma.order.findMany({
+        include: {
+          address: true
+        }
+      });
+    } else {
+      allOrders = await prisma.order.findMany({
+        where: { userId: userId },
+        include: {
+          address: true
+        }
+      });
+    }
 
     const itensHashmap = new Map<number, ItemDTO[]>();
-
+    
     await Promise.all(
       allOrders.map(async (order) => {
         const itens = await prisma.orderProduct.findMany({
@@ -43,8 +53,9 @@ export const getAll = async (userFirebaseId: string): Promise<OrderDTO[] | null>
           itensHashmap.set(order.id, formattedItens);
         }
       })
+      
     );
-
+    
     const orders = toOrdersDTOList(allOrders, itensHashmap)
     
     return getSortedOrders(orders);
@@ -60,7 +71,7 @@ export const getAll = async (userFirebaseId: string): Promise<OrderDTO[] | null>
 
 export const getById = async (userFirebaseId: string, id: number): Promise<OrderDTO | null> => {
   try {
-    const userId = await getUserId(userFirebaseId);
+    const userId = (await getUser(userFirebaseId)).id;
 
     const order = await prisma.order.findUnique({
       where: { id: id, userId: userId },
@@ -119,8 +130,6 @@ function getFormattedItens(itens: ({ product: { name: string; price: number | nu
   return formattedItens;
 }
 
-async function getUserId(userFirebaseId: string) {
-  const user = await UserService.getByFirebaseId(userFirebaseId);
-  const userId = user.id;
-  return userId;
+async function getUser(userFirebaseId: string) {
+  return await UserService.getByFirebaseId(userFirebaseId);
 }
