@@ -12,22 +12,70 @@ export const getAll = async (userFirebaseId: string): Promise<OrderDTO[] | null>
 
   try {
 
-    let allOrders = null;
+    const allOrders = await prisma.order.findMany({
+      where: { userId: userId },
+      include: {
+        address: true
+      }
+    });
 
-    if(user.role === 'admin') {
-      allOrders = await prisma.order.findMany({
-        include: {
-          address: true
+    const itemsHashmap = new Map<number, ItemDTO[]>();
+    
+    await Promise.all(
+      allOrders.map(async (order) => {
+        const items = await prisma.orderProduct.findMany({
+          where: { orderId: order.id },
+          include: {
+            product: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        });
+
+        if (items.length !== 0) {
+          const formattedItems = items.map((item) => ({
+            productName: item.product.name,
+            quantity: item.quantity,
+          }));
+
+          itemsHashmap.set(order.id, formattedItems);
         }
-      });
-    } else {
-      allOrders = await prisma.order.findMany({
-        where: { userId: userId },
-        include: {
-          address: true
-        }
-      });
+      })
+      
+    );
+    
+    const orders = toOrdersDTOList(allOrders, itemsHashmap)
+    
+    return getSortedOrders(orders);
+    
+  } catch (error: any) {
+    if (error.code === "P2002") {
+      throw new BadRequestError("Unique constraint failed");
     }
+    console.error(error);
+    throw new InternalServerError("Could not retrieve user");
+  }
+};
+
+export const getAllAdmin = async (userFirebaseId: string): Promise<OrderDTO[] | null> => {
+  // buscar user
+  const user = await getUser(userFirebaseId);
+
+  if(user.role != 'admin') {
+    throw new Error(
+      "Falha ao tentar login. Credenciais inválidas"
+    );
+  }
+
+  try { 
+
+    const allOrders = await prisma.order.findMany({
+      include: {
+        address: true
+      }
+    });
 
     const itemsHashmap = new Map<number, ItemDTO[]>();
     

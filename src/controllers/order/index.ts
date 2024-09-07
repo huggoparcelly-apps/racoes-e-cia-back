@@ -29,6 +29,19 @@ export const findAllOrders = async (req: Request, res: Response) => {
 };
 
 
+export const findAllAdminOrders = async (req: Request, res: Response) => {
+
+  try {
+    const { user_id } = req.body.user;
+    const allOrders = await OrderService.getAllAdmin(user_id);
+    
+    return res.status(StatusCodes.OK).json(allOrders);
+  } catch (error: any) {
+    console.error(error);
+    return res.status(500).json({ error: error.message });
+  }
+};
+
 export const findOrderById = async(req: Request, res: Response) => {
   
   try {
