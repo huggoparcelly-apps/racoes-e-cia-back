@@ -16,6 +16,9 @@ const validateJWT = async (req: Request, res: Response, next: NextFunction) => {
 
   try {
     const decoded = jwt.decode(token) as JwtPayload;
+    if(!decoded) {
+      return res.status(401).json({ message: 'Expired or invalid token' });
+    }
     const { user_id } = decoded;
 
     const findUserById = await UserService.getByFirebaseId(user_id);
@@ -23,7 +26,7 @@ const validateJWT = async (req: Request, res: Response, next: NextFunction) => {
       return res.status(401).json({ message: 'User not found' });
     }
     
-    req.body.user = { user_id };
+    req.body.user = { user_id, token };
     next();
   } catch (err) {
     console.log(err);

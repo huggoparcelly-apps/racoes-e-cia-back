@@ -2,6 +2,6 @@ import { Router } from "express";
 import { verifyToken } from "../controllers/verifyToken";
 
 const router = Router();
-router.post('/', verifyToken)
+router.get('/', verifyToken)
 
 export { router as verifyTokenRouter };

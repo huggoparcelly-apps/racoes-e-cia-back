@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { auth } from '../../firebase/firebaseAdmin';
 
 export const verifyToken =  async (req: Request, res: Response) => {
-  const token = req.body.token;
+  const { token } = req.body.user;
 
   try {
     const decodedToken = await auth.verifyIdToken(token);

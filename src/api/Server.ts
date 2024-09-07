@@ -26,7 +26,7 @@ app.use(express.json());
 
 app.use('/products', productsRouter);
 app.use('/user', userRouter);
-app.use('/verifyToken', verifyTokenRouter)
+app.use('/verifyToken', validateJWT, verifyTokenRouter)
 app.use('/orders', validateJWT,  orderRouter);
 app.use('/api/checkout_sessions', validateJWT, stripeRouter)
 
