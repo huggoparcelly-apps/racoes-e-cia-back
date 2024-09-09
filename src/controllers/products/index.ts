@@ -1,16 +1,30 @@
 import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { ProductService } from "../../services/products";
+import { UserService } from "../../services/users";
 
 export const createProduct = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const data = req.body;
+    const { user_id } = req.body.user;
+    
+    const user = await getUser(user_id);
+    const role = user.role;
+
+    if(role != 'admin') {
+      return res.status(StatusCodes.UNAUTHORIZED).json({ error: "Unauthorized request" });
+    }
+
     const newProduct = await ProductService.create(data);
     return res.status(StatusCodes.CREATED).json(newProduct);
   } catch (error) {
     next(error);
   }
 };
+
+async function getUser(userFirebaseId: string) {
+  return await UserService.getByFirebaseId(userFirebaseId);
+}
 
 export const findAllProducts = async (_req: Request, res: Response) => {
 
