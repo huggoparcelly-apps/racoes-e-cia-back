@@ -15,7 +15,7 @@ services:
       - postgres-data:/var/lib/postgresql/data
 
   app:
-    build: .
+    image: hparcelly/racoes-e-cia-backend:latest
     container_name: racoes-e-cia-backend
     restart: always
     ports:
@@ -27,6 +27,9 @@ services:
       PORT: ${PORT}
       NODE_ENV: ${NODE_ENV}
       DATABASE_URL: ${DATABASE_URL}
+      ORIGIN_CORS: ${ORIGIN_CORS}
+      GOOGLE_APPLICATION_CREDENTIALS: ${GOOGLE_APPLICATION_CREDENTIALS}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
   
   migrate:
     image: node:18

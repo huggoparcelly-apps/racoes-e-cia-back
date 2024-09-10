@@ -1,20 +1,32 @@
-# Use a imagem base do Node.js
-FROM node:20
+# Etapa 1: Build da aplicação
+FROM node:20-alpine AS builder
 
-# Defina o diretório de trabalho dentro do contêiner
+# Define o diretório de trabalho dentro do container
 WORKDIR /app
 
-# Copie o package.json e o package-lock.json para o diretório de trabalho
+# Copia o package.json e o package-lock.json
 COPY package*.json ./
 
-# Instale as dependências do projeto
+# Instala as dependências do projeto
 RUN npm install
 
-# Copie o restante do código da aplicação para o diretório de trabalho
+# Copia o restante do código para o container
 COPY . .
+
+# Instala o Prisma Client
+RUN npx prisma generate
+
+# Etapa 2: Execução da aplicação
+FROM node:20-alpine
+
+# Define o diretório de trabalho dentro do container
+WORKDIR /app
+
+# Copia os arquivos gerados pela build e o código-fonte
+COPY --from=builder /app . 
 
 # Exponha a porta que a aplicação irá rodar
 EXPOSE 3001
 
-# Comando para rodar a aplicação
-CMD ["npm", "run", "start"]
+# Comando para executar a migração e iniciar a aplicação
+CMD ["sh", "-c", "npx prisma migrate deploy && npm run start"]
