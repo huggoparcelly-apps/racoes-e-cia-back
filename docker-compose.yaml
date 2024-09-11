@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres
+    container_name: postgres-db
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  app:
+    image: hparcelly/racoes-e-cia-backend:latest
+    container_name: racoes-e-cia-backend
+    restart: always
+    ports:
+      - '3001:3001'
+    depends_on:
+      - db
+      - migrate
+    environment:
+      PORT: ${PORT}
+      NODE_ENV: ${NODE_ENV}
+      DATABASE_URL: ${DATABASE_URL}
+      ORIGIN_CORS: ${ORIGIN_CORS}
+      GOOGLE_APPLICATION_CREDENTIALS: ${GOOGLE_APPLICATION_CREDENTIALS}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+  
+  migrate:
+    image: node:18
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: npx prisma migrate dev 
+    depends_on:
+      - db
+  
+volumes:
+  postgres-data:
