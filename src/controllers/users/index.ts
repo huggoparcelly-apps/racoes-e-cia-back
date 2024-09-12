@@ -5,7 +5,7 @@ import { UserService } from "../../services/users";
 export const createUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const data = req.body;
-    const newUser = await UserService.create(data);
+    const newUser = await UserService.createUser(data);
     return res.status(StatusCodes.CREATED).json(newUser);
   } catch (error) {
     next(error);

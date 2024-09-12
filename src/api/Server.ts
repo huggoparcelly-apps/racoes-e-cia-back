@@ -14,18 +14,10 @@ import { stripeRouter } from "../routers/Stripe";
 
 const app = express();
 
-const allowedOrigins = [process.env.ORIGIN_CORS_1, process.env.ORIGIN_CORS_2];
+const allowedOrigins = [process.env.ORIGIN_CORS_1, process.env.ORIGIN_CORS_2, process.env.ORIGIN_CORS_3];
 
 const corsOptions = {
-  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
-    if (!origin) return callback(null, true);
-    
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: process.env.ORIGIN_CORS_1,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', 
   allowedHeaders: ['Content-Type', 'Authorization'], 
 }

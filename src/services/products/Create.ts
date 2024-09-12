@@ -4,7 +4,7 @@ import { InternalServerError } from "../../errors/InternalServerError";
 import { toProductDTO } from "../../mappers/products";
 import { IProduct, ProductDTO } from "../../utils/Interfaces";
 
-export const create = async (data: IProduct): Promise<ProductDTO | null> => {
+export const createProduct = async (data: IProduct): Promise<ProductDTO | null> => {
   
   try {
     const newProduct = await prisma.product.create({ data: { ...data } });
