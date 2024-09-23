@@ -4,7 +4,7 @@ import { InternalServerError } from "../../errors/InternalServerError";
 import { toUserDTO } from "../../mappers/users";
 import { IUser, UserDTO } from "../../utils/Interfaces";
 
-export const create = async (data: IUser): Promise<UserDTO | null> => {
+export const createUser = async (data: IUser): Promise<UserDTO | null> => {
   
   try {
     data.role = 'user'
@@ -16,7 +16,7 @@ export const create = async (data: IUser): Promise<UserDTO | null> => {
       throw new BadRequestError('Unique constraint failed');
     }
     console.error(error);
-    throw new InternalServerError('Could not create product');
+    throw new InternalServerError('Could not create a user');
   }
   
 }

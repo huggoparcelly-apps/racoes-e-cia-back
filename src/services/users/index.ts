@@ -1,7 +1,7 @@
-import * as create from "./Create";
+import * as createUser from "./Create";
 import * as find from './Find';
 
 export const UserService = {
-  ...create,
+  ...createUser,
   ...find,
 }

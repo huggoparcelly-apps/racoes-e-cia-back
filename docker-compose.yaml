@@ -4,7 +4,6 @@ services:
   db:
     image: postgres
     container_name: postgres-db
-    restart: always
     ports:
       - '5432:5432'
     environment:
@@ -15,9 +14,8 @@ services:
       - postgres-data:/var/lib/postgresql/data
 
   app:
-    image: hparcelly/racoes-e-cia-backend:latest
+    build: .
     container_name: racoes-e-cia-backend
-    restart: always
     ports:
       - '3001:3001'
     depends_on:
