@@ -68,6 +68,11 @@ Crie um arquivo .env na raiz do projeto com as seguintes variáveis:
 ```
 DATABASE_URL=postgresql://USER:PASSWORD@localhost:5432/dbname
 ORIGIN_CORS=http://localhost:3000
+POSTGRES_USER=dbuser
+POSTGRES_PASSWORD=dbpassword
+POSTGRES_DB=dbname
+GOOGLE_APPLICATION_CREDENTIALS=firebaseapicredentials
+STRIPE_SECRET_KEY=stripesecretekey
 ```
 
 #### 4. Utilizando Docker:
